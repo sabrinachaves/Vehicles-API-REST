@@ -1,11 +1,11 @@
 class VehicleDAO {
     save(){};
 
-    getVehicleById(){};
+    findById(){};
 
-    getVehicleByName(){};
+    findByName(){};
 
-    getAll(){};
+    findAll(){};
 
     editAll(){};
 

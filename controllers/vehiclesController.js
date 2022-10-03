@@ -5,15 +5,15 @@ exports.createVehicle = (req, res) =>{
 };
 
 exports.getVehicleById = (req, res) =>{
-    VehicleDAO.getVehicleById();
+    VehicleDAO.findById();
 };
 
 exports.getVehicleByName = (req, res) =>{
-    VehicleDAO.getVehicleByName();
+    VehicleDAO.findByName();
 };
 
 exports.getAll = (req, res) =>{
-    VehicleDAO.getAll();
+    VehicleDAO.findAll();
 };
 
 exports.editAll = (req, res) =>{
