@@ -1,9 +1,12 @@
-const { PORT } = require("dotenv").config().parsed;
-const routes = require("../routes/vehiclesRoutes");
 const express = require("express");
+const env = require("dotenv");
 const app = express();
 
-app.use(express.json());
-app.use("/vehicle", routes);
+const { PORT_DB } = env.config().parsed;
 
-app.listen(PORT, console.log(`Server running at port ${PORT}`));
+const vehiclesRouter = require("../routes/vehiclesRouter");
+
+app.use(express.json());
+app.use("/vehicles", vehiclesRouter);
+
+app.listen(PORT_DB, console.log(`Server running at ${PORT_DB}`));

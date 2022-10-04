@@ -1,32 +1,105 @@
-const VehicleDAO = require("../dao/vehicleDAO");
+const vehicle = require("../models/vehicle");
+const { Op } = require("sequelize");
+const { ulid } = require("ulid");
 
-exports.createVehicle = (req, res) =>{
-    VehicleDAO.save();
-};
+class VehiclesControllers {
 
-exports.getVehicleById = (req, res) =>{
-    VehicleDAO.findById();
-};
+  createVehicle(req, res) {
+    const { name, brand, year, type } = req.body;
+    vehicle.create({
+        id: ulid(),
+        name: name,
+        brand: brand,
+        year: year,
+        type: type
+    });
+  }
 
-exports.getVehicleByName = (req, res) =>{
-    VehicleDAO.findByName();
-};
+  getVehicleByIdOrName(req, res) {
+    const idOrName = req.params.idOrName;
+    console.log("teste", idOrName);
+    vehicle.findOne({ where: {
+        [Op.or]: [
+            { id: idOrName },
+            { name: idOrName } 
+        ]
+    }})
+    .then((product) => {
+        if(product !== null){
+            res.status(200).json(product)
+        }else{
+            res.status(404).json({ message: `Vehicle not found`})
+        }
+    })
+    .catch(err => {
+        res.status(500).json( {
+            error: {
+                name: err.name,
+                severity: err.parent.severity,
+                code: err.parent.code,
+            }
+        } )
+    })
+  }
 
-exports.getAll = (req, res) =>{
-    VehicleDAO.findAll();
-};
+  getVehicleByName(req, res) {
+    const name = req.params.name;
+    findOne({ where: { name: name } })
+    .then((product) => {
+        if(product !== null){
+            res.status(200).json(product)
+        }else{
+            res.status(404).json({ message: `Vehicle not found`})
+        }
+    })
+    .catch(err => {
+        res.status(500).json( {
+            error: {
+                name: err.name,
+                severity: err.parent.severity,
+                code: err.parent.code,
+            }
+        } )
+    })
+  }
 
-exports.editAll = (req, res) =>{
-    VehicleDAO.editAll();
-};
+  getAllVehicles(req, res) {
+    vehicle
+      .findAll()
+      .then((products) => res.status(200).json(products))
+      .catch((err) => {
+        res.status(500).json({
+          error: {
+            name: err.name,
+            severity: err.parent.severity,
+            code: err.parent.code,
+          },
+        });
+      });
+  }
 
-exports.partialEdit = (req, res) =>{
-    VehicleDAO.partialEdit();
-};
+  updateVehicle(req, res) {
+    const id = req.params.id;
 
-exports.removeVehicle = (req, res) =>{
-    VehicleDAO.removeVehicle();
-};
+    vehicle.update(req.body, { where: { id } })
+    .then(() => res.status(204).end())
+    .catch(() => res.status(500).json({ error: err }));
+  }
 
+  removeVehicle(req, res) {
+    const id = req.params.id;
 
+    vehicle
+    .destroy({ where: { id } })
+    .then((result) => {
+        if (result){
+            res.status(204).end();
+        }else{
+            res.status(404).json({ message: `Vehicle not found` });
+        }
+    })
+    .catch((err) => res.status(500).json({ error: err }));
+  }
+}
 
+module.exports = new VehiclesControllers();
