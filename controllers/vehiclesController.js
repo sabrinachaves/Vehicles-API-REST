@@ -15,15 +15,10 @@ class VehiclesControllers {
     });
   }
 
-  getVehicleByIdOrName(req, res) {
-    const idOrName = req.params.idOrName;
-    console.log("teste", idOrName);
-    vehicle.findOne({ where: {
-        [Op.or]: [
-            { id: idOrName },
-            { name: idOrName } 
-        ]
-    }})
+  getVehicleById(req, res) {
+    const id = req.params.id;
+    console.log("teste", id);
+    vehicle.findOne({ where: { id }})
     .then((product) => {
         if(product !== null){
             res.status(200).json(product)
@@ -64,8 +59,20 @@ class VehiclesControllers {
   }
 
   getAllVehicles(req, res) {
+    const { name } = req.query;
+
+    const filter = name
+    ? {
+      where: {
+        name: {
+          [Op.like]: `%${name}`,
+        },
+      },
+    }
+: {};
+
     vehicle
-      .findAll()
+      .findAll(filter)
       .then((products) => res.status(200).json(products))
       .catch((err) => {
         res.status(500).json({

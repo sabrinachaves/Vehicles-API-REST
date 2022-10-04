@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
     createVehicle,
-    getVehicleByIdOrName,
+    getVehicleById,
     getAllVehicles,
     updateVehicle,
     removeVehicle
@@ -10,7 +10,7 @@ const {
 
 router.post("/register", createVehicle);
 
-router.get("/:idOrName", getVehicleByIdOrName);
+router.get("/:id", getVehicleById);
 
 router.get("/", getAllVehicles);
 
