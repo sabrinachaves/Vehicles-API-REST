@@ -1,4 +1,4 @@
-const vehicle = require("../models/vehicle");
+const vehicle = require("../models/vehicleModel");
 const { Op } = require("sequelize");
 const { ulid } = require("ulid");
 
