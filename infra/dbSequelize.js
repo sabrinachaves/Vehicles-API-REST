@@ -1,13 +1,17 @@
 const { Sequelize } = require("sequelize");
-const { DATABASE_PATH, PORT } =
+const { HOST_DB, PORT_DB, USER_DB, PASS_DB, DATABASE, DIALECT } =
   require("dotenv").config().parsed;
 
   const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: DATABASE_PATH,
+    dialect: DIALECT,
+    database: DATABASE,
+    host: HOST_DB,
+    username: USER_DB,
+    password: PASS_DB,
+    port: PORT_DB,
     define: {
       timestamps: false,
-    }
+    },
   });
 
 sequelize

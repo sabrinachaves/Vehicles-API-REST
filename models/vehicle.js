@@ -1,4 +1,4 @@
-const { DataType, DataTypes, Model } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../infra/dbSequelize");
 
 const VehicleModel = sequelize.define("Vehicle", {
@@ -22,12 +22,19 @@ const VehicleModel = sequelize.define("Vehicle", {
     type: {
         type: DataTypes.STRING,
         allowNull: false,
-    }
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
 }, 
-{
-    createdAt: false,
-    updatedAt: false,
-    tableName: "vehicles"
+{ 
+    tableName: "Vehicles",
+    schema: "public",
 });
 
 module.exports = VehicleModel;

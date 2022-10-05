@@ -11,7 +11,9 @@ class VehiclesControllers {
         name: name,
         brand: brand,
         year: year,
-        type: type
+        type: type,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
     });
   }
 
@@ -88,7 +90,7 @@ class VehiclesControllers {
   updateVehicle(req, res) {
     const id = req.params.id;
 
-    vehicle.update(req.body, { where: { id } })
+    vehicle.update({...req.body, updatedAt: Date.now()}, { where: { id } })
     .then(() => res.status(204).end())
     .catch(() => res.status(500).json({ error: err }));
   }
